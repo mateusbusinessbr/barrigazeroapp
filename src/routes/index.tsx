@@ -26,7 +26,7 @@ function Entrar() {
   const [email, setEmail] = useState("");
   return (
     <AuthLayout>
-      <h1 className="mb-2 text-center text-4xl text-primary-foreground">Sua dieta, do seu jeito.</h1>
+      <h1 className="mb-2 text-center text-3xl text-primary-foreground">Sua dieta, do seu jeito.</h1>
       <p className="mb-8 text-center text-primary-foreground/85">
         Escolha o que gosta de comer. A gente monta o resto.
       </p>
