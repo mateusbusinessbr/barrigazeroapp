@@ -11,6 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as DietaRouteImport } from './routes/dieta'
+import { Route as EvolucaoRouteImport } from './routes/evolucao'
+import { Route as PainelRouteImport } from './routes/painel'
+import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PlanosRouteImport } from './routes/planos'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +27,26 @@ const CadastroRoute = CadastroRouteImport.update({
   path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DietaRoute = DietaRouteImport.update({
+  id: '/dieta',
+  path: '/dieta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvolucaoRoute = EvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlanosRoute = PlanosRouteImport.update({
   id: '/planos',
   path: '/planos',
@@ -32,30 +56,68 @@ const PlanosRoute = PlanosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/dieta': typeof DietaRoute
+  '/evolucao': typeof EvolucaoRoute
+  '/painel': typeof PainelRoute
+  '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/dieta': typeof DietaRoute
+  '/evolucao': typeof EvolucaoRoute
+  '/painel': typeof PainelRoute
+  '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/dieta': typeof DietaRoute
+  '/evolucao': typeof EvolucaoRoute
+  '/painel': typeof PainelRoute
+  '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cadastro' | '/planos'
+  fullPaths:
+    | '/'
+    | '/cadastro'
+    | '/dieta'
+    | '/evolucao'
+    | '/painel'
+    | '/perfil'
+    | '/planos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro' | '/planos'
-  id: '__root__' | '/' | '/cadastro' | '/planos'
+  to:
+    | '/'
+    | '/cadastro'
+    | '/dieta'
+    | '/evolucao'
+    | '/painel'
+    | '/perfil'
+    | '/planos'
+  id:
+    | '__root__'
+    | '/'
+    | '/cadastro'
+    | '/dieta'
+    | '/evolucao'
+    | '/painel'
+    | '/perfil'
+    | '/planos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
+  DietaRoute: typeof DietaRoute
+  EvolucaoRoute: typeof EvolucaoRoute
+  PainelRoute: typeof PainelRoute
+  PerfilRoute: typeof PerfilRoute
   PlanosRoute: typeof PlanosRoute
 }
 
@@ -75,6 +137,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dieta': {
+      id: '/dieta'
+      path: '/dieta'
+      fullPath: '/dieta'
+      preLoaderRoute: typeof DietaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evolucao': {
+      id: '/evolucao'
+      path: '/evolucao'
+      fullPath: '/evolucao'
+      preLoaderRoute: typeof EvolucaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/planos': {
       id: '/planos'
       path: '/planos'
@@ -88,6 +178,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
+  DietaRoute: DietaRoute,
+  EvolucaoRoute: EvolucaoRoute,
+  PainelRoute: PainelRoute,
+  PerfilRoute: PerfilRoute,
   PlanosRoute: PlanosRoute,
 }
 export const routeTree = rootRouteImport
