@@ -143,7 +143,7 @@ function Dieta() {
 
         options.forEach((option, index) => {
           const itemText = option.items.map((item) => `${item.name} — ${item.portion}`).join(" • ");
-          const wrapped = doc.splitTextToSize(itemText, pageW - margin * 2 - 42).slice(0, 2);
+          const wrapped = doc.splitTextToSize(itemText, pageW - margin * 2 - 42).slice(0, 1);
           const lineY = y + 16 + index * 8.2;
           doc.setFont("helvetica", "bold");
           doc.setFontSize(7.5);
