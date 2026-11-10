@@ -44,7 +44,7 @@ function Dieta() {
     line(`${s.user?.name ?? ""} | ${GOALS.find((g) => g.id === p.goal)?.label} | ${kcal} kcal/dia | IMC ${b.toFixed(1)}`);
     week.forEach((d, i) => {
       y += 3;
-      line(WEEKDAYS[i], 14, true);
+      line(WEEKDAYS[i]!, 14, true);
       MEAL_KEYS.forEach((k) => {
         line(`${MEAL_INFO[k].time} - ${MEAL_INFO[k].label}`, 11, true);
         d[k].forEach((o, n) =>
@@ -84,7 +84,7 @@ function Dieta() {
             <span className="text-sm font-semibold text-primary">{MEAL_INFO[k].time}</span>
           </div>
           <div className="space-y-2">
-            {week[day][k].map((o, n) => (
+            {week[day]![k].map((o, n) => (
               <div key={n} className="rounded-2xl bg-muted p-3">
                 <div className="mb-1 flex justify-between text-xs font-bold uppercase text-muted-foreground">
                   <span>Opção {n + 1}</span><span>{o.kcal} kcal</span>

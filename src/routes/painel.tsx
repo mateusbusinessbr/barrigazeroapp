@@ -33,7 +33,7 @@ function Painel() {
   const water = s.water[t] ?? 0;
   const meals = s.meals[t] ?? {};
   const trainedDays = new Set(s.workouts.filter((w) => w.date >= weekStart()).map((w) => w.date)).size;
-  const [act, setAct] = useState(ACTIVITIES[0].id);
+  const [act, setAct] = useState(ACTIVITIES[0]!.id);
   const [min, setMin] = useState(30);
   const eaten = Object.values(meals).reduce((a, b) => a + (b ?? 0), 0);
   const burned = s.workouts.filter((w) => w.date === t).reduce((a, w) => a + w.kcal, 0);
@@ -42,7 +42,7 @@ function Painel() {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-muted-foreground">Olá, {s.user?.name.split(" ")[0]} 👋</p>
+        <p className="text-muted-foreground">Olá, {s.user?.name.split(" ")[0] ?? ""} 👋</p>
         <h1 className="text-3xl">Acompanhe todo o seu progresso</h1>
       </div>
 

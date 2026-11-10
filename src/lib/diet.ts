@@ -185,7 +185,7 @@ function rng(seed: number) {
 }
 
 function pick<T>(arr: T[], r: () => number) {
-  return arr[Math.floor(r() * arr.length)];
+  return arr[Math.floor(r() * arr.length)]!;
 }
 
 function scale(items: Food[], target: number): MealOption {
