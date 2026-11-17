@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as DietaRouteImport } from './routes/dieta'
+import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as EvolucaoRouteImport } from './routes/evolucao'
 import { Route as PainelRouteImport } from './routes/painel'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PlanosRouteImport } from './routes/planos'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +32,11 @@ const CadastroRoute = CadastroRouteImport.update({
 const DietaRoute = DietaRouteImport.update({
   id: '/dieta',
   path: '/dieta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
+  id: '/esqueci-senha',
+  path: '/esqueci-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvolucaoRoute = EvolucaoRouteImport.update({
@@ -52,34 +59,45 @@ const PlanosRoute = PlanosRouteImport.update({
   path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/dieta': typeof DietaRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/evolucao': typeof EvolucaoRoute
   '/painel': typeof PainelRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/dieta': typeof DietaRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/evolucao': typeof EvolucaoRoute
   '/painel': typeof PainelRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/dieta': typeof DietaRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/evolucao': typeof EvolucaoRoute
   '/painel': typeof PainelRoute
   '/perfil': typeof PerfilRoute
   '/planos': typeof PlanosRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,38 +105,46 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/dieta'
+    | '/esqueci-senha'
     | '/evolucao'
     | '/painel'
     | '/perfil'
     | '/planos'
+    | '/redefinir-senha'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/cadastro'
     | '/dieta'
+    | '/esqueci-senha'
     | '/evolucao'
     | '/painel'
     | '/perfil'
     | '/planos'
+    | '/redefinir-senha'
   id:
     | '__root__'
     | '/'
     | '/cadastro'
     | '/dieta'
+    | '/esqueci-senha'
     | '/evolucao'
     | '/painel'
     | '/perfil'
     | '/planos'
+    | '/redefinir-senha'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
   DietaRoute: typeof DietaRoute
+  EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   EvolucaoRoute: typeof EvolucaoRoute
   PainelRoute: typeof PainelRoute
   PerfilRoute: typeof PerfilRoute
   PlanosRoute: typeof PlanosRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -142,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/dieta'
       fullPath: '/dieta'
       preLoaderRoute: typeof DietaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-senha': {
+      id: '/esqueci-senha'
+      path: '/esqueci-senha'
+      fullPath: '/esqueci-senha'
+      preLoaderRoute: typeof EsqueciSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evolucao': {
@@ -172,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -179,10 +219,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   DietaRoute: DietaRoute,
+  EsqueciSenhaRoute: EsqueciSenhaRoute,
   EvolucaoRoute: EvolucaoRoute,
   PainelRoute: PainelRoute,
   PerfilRoute: PerfilRoute,
   PlanosRoute: PlanosRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

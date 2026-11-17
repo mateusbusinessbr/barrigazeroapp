@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { getState } from "@/lib/store";
+import { signOut } from "@/lib/sign-out";
 
 export function Logo({ light }: { light?: boolean }) {
   return (
-    <span className={`font-display text-xl tracking-tight ${light ? "text-primary-foreground" : "text-primary"}`}>
+    <span
+      className={`font-display text-xl tracking-tight ${light ? "text-primary-foreground" : "text-primary"}`}
+    >
       BARRIGA<span className="text-accent">ZERO</span>
     </span>
   );
@@ -33,11 +36,19 @@ const NAV = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const ok = useGuard("profile");
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <Logo />
+          <button
+            type="button"
+            onClick={() => signOut(navigate)}
+            className="text-sm font-semibold text-muted-foreground hover:text-foreground"
+          >
+            Sair
+          </button>
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-4 py-6">{ok ? children : null}</main>

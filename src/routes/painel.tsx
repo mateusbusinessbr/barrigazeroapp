@@ -1,3 +1,4 @@
+import { requireUser } from "@/lib/auth";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/shell";
@@ -7,6 +8,8 @@ import { ACTIVITIES, dailyCalories, MEAL_INFO, MEAL_KEYS } from "@/lib/diet";
 import { setState, today, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/painel")({
+  ssr: false,
+  beforeLoad: requireUser,
   head: () => ({
     meta: [
       { title: "Hoje — Barriga Zero" },
@@ -17,7 +20,11 @@ export const Route = createFileRoute("/painel")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <AppShell><Painel /></AppShell>,
+  component: () => (
+    <AppShell>
+      <Painel />
+    </AppShell>
+  ),
 });
 
 function weekStart() {
@@ -32,7 +39,8 @@ function Painel() {
   const kcal = dailyCalories(s.profile!);
   const water = s.water[t] ?? 0;
   const meals = s.meals[t] ?? {};
-  const trainedDays = new Set(s.workouts.filter((w) => w.date >= weekStart()).map((w) => w.date)).size;
+  const trainedDays = new Set(s.workouts.filter((w) => w.date >= weekStart()).map((w) => w.date))
+    .size;
   const [act, setAct] = useState(ACTIVITIES[0]!.id);
   const [min, setMin] = useState(30);
   const eaten = Object.values(meals).reduce((a, b) => a + (b ?? 0), 0);
@@ -49,7 +57,9 @@ function Painel() {
       {firstMeal && (
         <div className="rounded-3xl bg-accent p-5 text-accent-foreground">
           <p className="font-display text-lg">Desafio de 30 dias 🏆</p>
-          <p className="text-sm">Registre sua 1ª refeição e comece seu desafio para concorrer a prêmios mensais!</p>
+          <p className="text-sm">
+            Registre sua 1ª refeição e comece seu desafio para concorrer a prêmios mensais!
+          </p>
         </div>
       )}
 
@@ -65,14 +75,24 @@ function Painel() {
             const target = Math.round(kcal * MEAL_INFO[k].share);
             const done = meals[k] ?? 0;
             return (
-              <button key={k}
-                onClick={() => setState((st) => ({
-                  meals: { ...st.meals, [t]: { ...st.meals[t], [k]: done ? 0 : target } },
-                }))}
+              <button
+                key={k}
+                onClick={() =>
+                  setState((st) => ({
+                    meals: { ...st.meals, [t]: { ...st.meals[t], [k]: done ? 0 : target } },
+                  }))
+                }
                 className={`flex w-full items-center justify-between rounded-2xl p-4 text-left transition ${
-                  done ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
-                <span className="font-semibold">{done ? "✓ " : ""}{MEAL_INFO[k].label}</span>
-                <span className="text-sm">{done} / {target} kcal</span>
+                  done ? "bg-primary text-primary-foreground" : "bg-muted"
+                }`}
+              >
+                <span className="font-semibold">
+                  {done ? "✓ " : ""}
+                  {MEAL_INFO[k].label}
+                </span>
+                <span className="text-sm">
+                  {done} / {target} kcal
+                </span>
               </button>
             );
           })}
@@ -81,34 +101,68 @@ function Painel() {
 
       <Card title="Hidratação" sub={`Hoje — ${water} ml de 2500 ml`}>
         <div className="mb-3 h-3 overflow-hidden rounded-full bg-muted">
-          <div className="h-full bg-water transition-all" style={{ width: `${Math.min(100, water / 25)}%` }} />
+          <div
+            className="h-full bg-water transition-all"
+            style={{ width: `${Math.min(100, water / 25)}%` }}
+          />
         </div>
         <div className="flex gap-2">
           {[100, 250, 500].map((ml) => (
-            <Button key={ml} variant="outline" onClick={() =>
-              setState((st) => ({ water: { ...st.water, [t]: (st.water[t] ?? 0) + ml } }))}>+{ml} ml</Button>
+            <Button
+              key={ml}
+              variant="outline"
+              onClick={() =>
+                setState((st) => ({ water: { ...st.water, [t]: (st.water[t] ?? 0) + ml } }))
+              }
+            >
+              +{ml} ml
+            </Button>
           ))}
-          <Button variant="ghost" onClick={() => setState((st) => ({ water: { ...st.water, [t]: 0 } }))}>Zerar</Button>
+          <Button
+            variant="ghost"
+            onClick={() => setState((st) => ({ water: { ...st.water, [t]: 0 } }))}
+          >
+            Zerar
+          </Button>
         </div>
       </Card>
 
       <Card title="Registre seus TREINOS" sub="Que atividade você fez?">
         <div className="mb-3 grid grid-cols-2 gap-2">
           {ACTIVITIES.map((a) => (
-            <button key={a.id} onClick={() => setAct(a.id)}
-              className={`rounded-2xl p-3 text-left ${act === a.id ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+            <button
+              key={a.id}
+              onClick={() => setAct(a.id)}
+              className={`rounded-2xl p-3 text-left ${act === a.id ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+            >
               <p className="font-semibold">{a.label}</p>
               <p className="text-xs opacity-80">{a.kcalMin} kcal/min</p>
             </button>
           ))}
         </div>
         <div className="flex gap-2">
-          <Input type="number" min={1} value={min} onChange={(e) => setMin(Number(e.target.value))} className="w-28" />
+          <Input
+            type="number"
+            min={1}
+            value={min}
+            onChange={(e) => setMin(Number(e.target.value))}
+            className="w-28"
+          />
           <span className="self-center text-sm text-muted-foreground">minutos</span>
-          <Button className="ml-auto" onClick={() => {
-            const a = ACTIVITIES.find((x) => x.id === act)!;
-            setState((st) => ({ workouts: [...st.workouts, { date: t, activity: a.label, minutes: min, kcal: a.kcalMin * min }] }));
-          }}>Nova atividade</Button>
+          <Button
+            className="ml-auto"
+            onClick={() => {
+              const a = ACTIVITIES.find((x) => x.id === act)!;
+              setState((st) => ({
+                workouts: [
+                  ...st.workouts,
+                  { date: t, activity: a.label, minutes: min, kcal: a.kcalMin * min },
+                ],
+              }));
+            }}
+          >
+            Nova atividade
+          </Button>
         </div>
       </Card>
 

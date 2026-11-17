@@ -1,3 +1,4 @@
+import { requireUser } from "@/lib/auth";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AuthLayout, useGuard } from "@/components/shell";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,8 @@ import { PLANS } from "@/lib/diet";
 import { setState } from "@/lib/store";
 
 export const Route = createFileRoute("/planos")({
+  ssr: false,
+  beforeLoad: requireUser,
   head: () => ({
     meta: [
       { title: "Planos — Barriga Zero" },
@@ -34,7 +37,9 @@ function Planos() {
     <AuthLayout>
       <h1 className="mb-2 text-center text-3xl text-primary-foreground">Escolha seu plano</h1>
       <ul className="mb-6 space-y-1 text-center text-sm text-primary-foreground/90">
-        {PERKS.map((p) => <li key={p}>✓ {p}</li>)}
+        {PERKS.map((p) => (
+          <li key={p}>✓ {p}</li>
+        ))}
       </ul>
       <div className="space-y-4">
         {PLANS.map((p) => (
@@ -46,7 +51,8 @@ function Planos() {
             )}
             <p className="text-sm font-semibold uppercase text-muted-foreground">{p.label}</p>
             <p className="mb-4 font-display text-4xl text-foreground">
-              {p.price}<span className="font-sans text-base text-muted-foreground">{p.period}</span>
+              {p.price}
+              <span className="font-sans text-base text-muted-foreground">{p.period}</span>
             </p>
             <Button
               size="lg"

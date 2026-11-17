@@ -1,24 +1,44 @@
+import { requireUser } from "@/lib/auth";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
 import {
-  bmi, bmiLabel, dailyCalories, generateWeek, GOALS, MEAL_INFO, MEAL_KEYS, WEEKDAYS,
+  bmi,
+  bmiLabel,
+  dailyCalories,
+  generateWeek,
+  GOALS,
+  MEAL_INFO,
+  MEAL_KEYS,
+  WEEKDAYS,
 } from "@/lib/diet";
 import { setState, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/dieta")({
+  ssr: false,
+  beforeLoad: requireUser,
   head: () => ({
     meta: [
       { title: "Minha dieta da semana — Barriga Zero" },
-      { name: "description", content: "Seu cardápio semanal com horários e opções para cada refeição." },
+      {
+        name: "description",
+        content: "Seu cardápio semanal com horários e opções para cada refeição.",
+      },
       { property: "og:title", content: "Minha dieta da semana — Barriga Zero" },
-      { property: "og:description", content: "Cardápio semanal personalizado com download em PDF." },
+      {
+        property: "og:description",
+        content: "Cardápio semanal personalizado com download em PDF.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <AppShell><Dieta /></AppShell>,
+  component: () => (
+    <AppShell>
+      <Dieta />
+    </AppShell>
+  ),
 });
 
 function Dieta() {
@@ -78,7 +98,11 @@ function Dieta() {
     doc.setTextColor(...green);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text(doc.splitTextToSize(GOALS.find((g) => g.id === p.goal)?.label ?? "Personalizado", 58), margin + 7, 143);
+    doc.text(
+      doc.splitTextToSize(GOALS.find((g) => g.id === p.goal)?.label ?? "Personalizado", 58),
+      margin + 7,
+      143,
+    );
     doc.text(`${kcal} kcal/dia`, margin + 72, 143);
     doc.text(b.toFixed(1), pageW - margin - 30, 143);
     doc.setTextColor(...ink);
@@ -105,9 +129,12 @@ function Dieta() {
     doc.setTextColor(120, 91, 48);
     doc.setFontSize(8.5);
     doc.text(
-      doc.splitTextToSize("Importante: este material é uma sugestão geral gerada automaticamente e não substitui avaliação de nutricionista. Pessoas com condições de saúde, gestantes, lactantes ou menores de 18 anos devem buscar orientação profissional.",
-        pageW - margin * 2 - 12),
-      margin + 6, 240,
+      doc.splitTextToSize(
+        "Importante: este material é uma sugestão geral gerada automaticamente e não substitui avaliação de nutricionista. Pessoas com condições de saúde, gestantes, lactantes ou menores de 18 anos devem buscar orientação profissional.",
+        pageW - margin * 2 - 12,
+      ),
+      margin + 6,
+      240,
     );
     footer(1, 8);
 
@@ -122,7 +149,12 @@ function Dieta() {
       doc.text(WEEKDAYS[i]!, margin, 19);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      doc.text(`${kcal} kcal/dia • ${GOALS.find((g) => g.id === p.goal)?.label ?? ""}`, pageW - margin, 18, { align: "right" });
+      doc.text(
+        `${kcal} kcal/dia • ${GOALS.find((g) => g.id === p.goal)?.label ?? ""}`,
+        pageW - margin,
+        18,
+        { align: "right" },
+      );
 
       let y = 38;
       MEAL_KEYS.forEach((key) => {
@@ -169,9 +201,13 @@ function Dieta() {
       <div className="rounded-3xl bg-hero p-6 text-primary-foreground shadow-soft">
         <p className="text-sm opacity-85">{GOALS.find((g) => g.id === p.goal)?.label}</p>
         <p className="font-display text-4xl">{kcal} kcal/dia</p>
-        <p className="mt-1 text-sm opacity-85">IMC {b.toFixed(1)} · {bmiLabel(b)}</p>
+        <p className="mt-1 text-sm opacity-85">
+          IMC {b.toFixed(1)} · {bmiLabel(b)}
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button variant="secondary" onClick={downloadPdf}>Baixar PDF</Button>
+          <Button variant="secondary" onClick={downloadPdf}>
+            Baixar PDF
+          </Button>
           <Button variant="secondary" onClick={() => setState((st) => ({ seed: st.seed + 1 }))}>
             Gerar novas opções
           </Button>
@@ -179,9 +215,15 @@ function Dieta() {
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1">
         {WEEKDAYS.map((d, i) => (
-          <button key={d} onClick={() => setDay(i)}
+          <button
+            key={d}
+            onClick={() => setDay(i)}
             className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold ${
-              day === i ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}>
+              day === i
+                ? "bg-primary text-primary-foreground"
+                : "bg-secondary text-secondary-foreground"
+            }`}
+          >
             {d}
           </button>
         ))}
@@ -196,11 +238,14 @@ function Dieta() {
             {week[day]![k].map((o, n) => (
               <div key={n} className="rounded-2xl bg-muted p-3">
                 <div className="mb-1 flex justify-between text-xs font-bold uppercase text-muted-foreground">
-                  <span>Opção {n + 1}</span><span>{o.kcal} kcal</span>
+                  <span>Opção {n + 1}</span>
+                  <span>{o.kcal} kcal</span>
                 </div>
                 <ul className="text-sm">
                   {o.items.map((it, j) => (
-                    <li key={j}><b>{it.name}</b> <span className="text-muted-foreground">— {it.portion}</span></li>
+                    <li key={j}>
+                      <b>{it.name}</b> <span className="text-muted-foreground">— {it.portion}</span>
+                    </li>
                   ))}
                 </ul>
               </div>
